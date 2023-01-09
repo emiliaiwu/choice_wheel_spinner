@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,500;1,700&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Work Sans', sans-serif;
+    max
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle {
+    width: 70vmin;
+    height: 70vmin;
+    background-color: blue;
+    border-radius: 50%;
+}
