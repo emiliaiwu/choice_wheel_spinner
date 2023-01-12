@@ -9,7 +9,7 @@ const shuffleBtn = document.querySelector('.shuffle');
 const sortBtn = document.querySelector('.sort');
 const clearBtn = document.querySelector('.reset');
 const spinBtn = document.querySelector('.spin');
-const angleMark = document.querySelector('.angle-indicator');
+const angleIndicator = document.querySelector('.angle-indicator');
 let sliceName = choicesTextArea.value;
 const colors = [
 	'DeepSkyBlue',
@@ -31,62 +31,12 @@ const spins = document.querySelector('.spins');
 let slices = [];
 
 
-// const createChoiceTags = () => {
-//     const choice = document.createElement('span');
-//     choice.classList.add('choice');
-//     choice.innerText = choicesTextArea.value;
-//     choiceContainer.prepend(choice);
-//     // slices.push(choice.innerText);
-// 	choicesTextArea.value = '';
-// }
-
-// const removeChoice = (index) => {
-// 	choiceContainer.addEventListener('click', (event) => {
-// 		const clickedChoice = event.target;
-// 		const choices = Array.from(choiceContainer.children);
-// 		// const index = choices.indexOf(clickedChoice);
-// 		slices.splice(index, 1);
-// 		clickedChoice.remove();
-// 		console.log(slices);
-// 		console.log(index);
-// 		console.log(clickedChoice)
-// 		drawSlices();
-		
-// 		for (let i = 0; i < slices.length; i++) {
-// 			removeChoice(i);
-// 		}
-// 	})
-// }
-// removeChoice();
-
-
-// function removeSlice(index) {
-// 	slices.splice(index, 1);
-// 	drawSlices();
-// 	// choiceContainer.innerHTML = '';
-// 	document.getElementById('slicelist').innerHTML = '';
-// 	for (let i = 0; i < slices.length; i++) {
-// 		choiceContainer.innerHTML += `<div onclick="removeSlice(${i})>${slices[i].sliceName}</div>`;
-// 	}
-// }
-
-// function addSlice() {
-// 	let sliceName = choicesTextArea.value;
-// 	slices.push({ sliceName });
-// 	drawSlices();
-// 	choiceContainer.innerHTML += `<divonclick="removeSlice(${
-// 		slices.length - 1
-// 	})">${sliceName}</div>`;
-	
-// 	choicesTextArea.value = '';
-// }
-
-
 choicesTextArea.addEventListener('keydown', (e) => {
 	if (choicesTextArea.value !== '') {
 		if (e.key === 'Enter') {
 			addSlice();
-			canvas.classList.add('spins');
+			// spinning.classList.add('spins');
+			
 		}
 	}
 
@@ -105,7 +55,7 @@ function drawSlices() {
 	let sliceAngle = (Math.PI * 2) / slices.length;
 	let startAngle = 0;
 	for (let i = 0; i < slices.length; i++) {
-		ctx.fillStyle = colors[i];
+		ctx.fillStyle = colors[i % colors.length];
 		ctx.beginPath();
 		ctx.moveTo(centerX, centerY);
 		ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
@@ -128,14 +78,6 @@ function drawSlices() {
 		ctx.font = '16px Arial';
 		ctx.fillText(slices[i].sliceName, radius * 0.6, 0);
 
-
-		console.log(
-					'slice: ' +
-						slices[i].sliceName +
-						' has angle: ' +
-						(startAngle + sliceAngle / 2 + rotation)
-				);
-
 		// restore the canvas to its original rotation
 		ctx.restore();
 
@@ -146,10 +88,6 @@ function drawSlices() {
 
 	
 }
-
-
-
-
 
 
 // Function to add a slice
@@ -179,16 +117,6 @@ function renderSliceList() {
 		div.onclick = () => removeSlice(index);
 		sliceList.appendChild(div);
 	});
-}
-
-
-function getRandomColor() {
-	var letters = '0123456789ABCDEF';
-	var color = '#';
-	for (var i = 0; i < 6; i++) {
-		color += letters[Math.floor(Math.random() * 16)];
-	}
-	return color;
 }
 
 
@@ -243,51 +171,19 @@ let rotation = 0;
 let animationId;
 
 rotateBtn.addEventListener('click', rotateCanvas);
-
 function rotateCanvas() {
-	canvas.classList.add('spins');
-	// spins.style.animationDuration = '0.2s';
-	console.log(spins)
-	// canvas.classList.add('spins');
-	// let randomAngle = Math.floor(Math.random() * 360); // generates a random angle between 0 and 360
-	// rotation += randomAngle;
-	// canvas.style.transform = 'rotate(' + rotation + 'deg)';
+	// canvas.classList.remove('spins');
+	let randomAngle = Math.floor(Math.random() * 360); // generates a random angle between 0 and 360
+	rotation += randomAngle;
+	canvas.style.transform = 'rotate(' + rotation + 'deg)';
 	animationId = requestAnimationFrame(rotateCanvas);
 	let randomTime = Math.floor(Math.random() * 7000); // generates a random time between 0 and 7000
 	setTimeout(function () {
 		cancelAnimationFrame(animationId);
-		determineSlice(rotation);
+		// determineSlice(rotation);
 		drawSlices();
 	}, randomTime);
 }
 
+// angleIndicator.addEventListener('click', findActiveSlice)
 
-function determineSlice(rotation) {
-	let sliceAngle = 360 / slices.length;
-	let topCenterAngle = rotation % 360;
-	for (let i = 0; i < slices.length; i++) {
-		let startAngle = i * sliceAngle;
-		let endAngle = startAngle + sliceAngle;
-
-		console.log(
-			'Slice: ' +
-				slices[i].sliceName +
-				' has angle range of: ' +
-				startAngle +
-				'-' +
-				endAngle
-		);
-		// check if the top center angle is within the range of the slice
-		if (topCenterAngle >= startAngle && topCenterAngle <= endAngle) {
-			console.log('Selected Slice: ' + slices[i].sliceName);
-			console.log(
-				'Slice: ' +
-					slices[i].sliceName +
-					' has angle range of: ' +
-					startAngle +
-					'-' +
-					endAngle
-			);
-		}
-	}
-}
