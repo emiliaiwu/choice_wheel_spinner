@@ -184,18 +184,14 @@ let angleIndicatorDeg = 270;
 
 rotateBtn.addEventListener('click', rotateSlices);
 function rotateSlices() {
-	spinCount++;
-	rotation += Math.floor(Math.PI * 2) / slices.length / 4;
+	let randomTime = Math.floor(Math.random() * 5) + 1;
 
-	if (spinCount > 2) {
-		rotation += Math.floor(Math.PI * 2) / slices.length / 20;
-	}
-	
+	rotation += Math.floor(Math.PI * 2) / slices.length / randomTime;
 
 	console.log(spinCount);
 	// rotation += Math.floor((Math.PI * 2)) / slices.length;
 	// rotation += Math.floor(Math.PI * 2) / slices.length / 5;
-	console.log(rotation)
+	console.log(rotation);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	let sliceAngle = (Math.PI * 2) / slices.length;
 	let startAngle = 0;
@@ -245,10 +241,7 @@ function rotateSlices() {
 		setTimeout(function () {
 			pickedSlice();
 		}, 500);
-		
-
 	}, 3000);
-
 }
  
 
@@ -275,11 +268,13 @@ function pickedSlice() {
 
 	}
 	
-	cancelDisplayMessage.addEventListener('click', () => {
+}
+
+cancelDisplayMessage.addEventListener('click', () => {
 		displayMessage.classList.remove('show');
 		blurBackground.classList.remove('blur');
 	})
-}
+
 
 
 
